@@ -1,6 +1,7 @@
 import { Scene } from "phaser";
 import Player from "../characters/Player";
 import { setBackground } from "../utils/backgroundManager";
+import Config from "../Config";
 
 export class PlayingScene extends Scene {
   constructor() {
@@ -34,11 +35,20 @@ export class PlayingScene extends Scene {
     // @see - https://newdocs.phaser.io/docs/3.60.0/Phaser.Types.Input.Keyboard.CursorKeys
     this.m_cursorKeys = this.input.keyboard.createCursorKeys();
 
+    // camera가 player를 따라오도록 하여 뱀파이어 서바이벌처럼 player가 가운데 고정되도록 합니다.
+    this.cameras.main.startFollow(this.m_player);
+
     setBackground(this, "background1");
   }
 
   update() {
     this.movePlayerManager();
+
+    // camera가 가는 곳으로 background가 따라 움직이도록 해줍니다.
+    this.m_background.setX(this.m_player.x - Config.width / 2);
+    this.m_background.setY(this.m_player.y - Config.height / 2);
+
+    this.m_background.tilePositionX = this.m_player.x - Config.width / 2;
   }
 
   movePlayerManager() {
@@ -64,5 +74,19 @@ export class PlayingScene extends Scene {
     // 왼쪽 키가 눌려있을 때는 vector[0] += -1, 오른쪽 키가 눌려있을 때는 vector[0] += 1을 해줍니다.
     // 위/아래 또한 같은 방법으로 벡터를 수정해줍니다.
     let vector = [0, 0];
+    if (this.m_cursorKeys.left.isDown) {
+      vector[0] += -1;
+    } else if (this.m_cursorKeys.right.isDown) {
+      vector[0] += 1;
+    }
+
+    if (this.m_cursorKeys.up.isDown) {
+      vector[1] += -1;
+    } else if (this.m_cursorKeys.down.isDown) {
+      vector[1] += 1;
+    }
+
+    // vector를 player 클래스의 메소드의 파라미터로 넘겨줍니다.
+    this.m_player.move(vector);
   }
 }
