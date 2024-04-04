@@ -25,7 +25,7 @@ export default class Player extends Physics.Arcade.Sprite {
   }
 
   move(vector) {
-    let PLAYER_SPEED = 4;
+    let PLAYER_SPEED = 2;
 
     this.x += vector[0] * PLAYER_SPEED;
     this.y += vector[1] * PLAYER_SPEED;

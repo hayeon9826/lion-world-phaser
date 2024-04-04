@@ -1,7 +1,9 @@
 import { Scene } from "phaser";
+import Config from "../Config";
 import Player from "../characters/Player";
 import { setBackground } from "../utils/backgroundManager";
-import Config from "../Config";
+import Mob from "../characters/Mob";
+import { addMobEvent } from "../utils/mobManager";
 
 export class PlayingScene extends Scene {
   constructor() {
@@ -39,6 +41,29 @@ export class PlayingScene extends Scene {
     this.cameras.main.startFollow(this.m_player);
 
     setBackground(this, "background1");
+
+    // m_mobs는 physics group으로, 속한 모든 오브젝트에 동일한 물리법칙을 적옹할 수 있습니다.
+    // m_mobEvents는 mob event의 timer를 담을 배열로, mob event를 추가 및 제거할 때 사용할 것입니다.
+    // addMobEvent는 m_mobEvents에 mob event의 timer를 추가해줍니다.
+    this.m_mobs = this.physics.add.group();
+    this.m_mobs.add(new Mob(this, 1000, "mob1", "mob1_anim", 10, 0.9));
+    this.m_mobEvents = [];
+
+    // scene, repeatGap, mobTexture, mobAnim, mobHp, mobDropRate
+    addMobEvent(this, 1000, "mob1", "mob1_anim", 10, 0.9);
+    // addMobEvent(this, 500, "mob2", "mob2_anim", 20, 0.6);
+    // addMobEvent(this, 800, "mob3", "mob3_anim", 30, 0.5);
+    // addMobEvent(this, 400, "mob4", "mob4_anim", 40, 0.3);
+
+    // attacks
+    // 정적인 공격과 동적인 공격의 동작 방식이 다르므로 따로 group을 만들어줍니다.
+    // attack event를 저장하는 객체도 멤버 변수로 만들어줍니다.
+    // 이는 공격 강화등에 활용될 것입니다.
+    this.m_weaponDynamic = this.add.group();
+    this.m_weaponStatic = this.add.group();
+    this.m_attackEvent = {};
+    // PlayingScene이 실행되면 바로 beam attack event를 추가해줍니다.
+    // addAttackEvent(this, "beam", 10, 1, 1000);
   }
 
   update() {
@@ -49,6 +74,16 @@ export class PlayingScene extends Scene {
     this.m_background.setY(this.m_player.y - Config.height / 2);
 
     this.m_background.tilePositionX = this.m_player.x - Config.width / 2;
+    this.m_background.tilePositionY = this.m_player.y - Config.width / 2;
+
+    // player로부터 가장 가까운 mob을 구합니다.
+    // 가장 가까운 mob은 mob, player의 움직임에 따라 계속 바뀌므로 update 내에서 구해야 합니다.
+    // getChildren: group에 속한 모든 객체들의 배열을 리턴하는 메소드입니다.
+    const closest = this.physics.closest(
+      this.m_player,
+      this.m_mobs.getChildren()
+    );
+    this.m_closest = closest;
   }
 
   movePlayerManager() {
