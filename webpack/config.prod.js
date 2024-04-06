@@ -69,12 +69,12 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./index.html",
     }),
-    new CopyPlugin({
-      patterns: [
-        { from: "public/favicon.png", to: "favicon.png" },
-        { from: "public/favicon.ico", to: "favicon.ico" },
-        { from: "public/style.css", to: "style.css" },
-      ],
-    }),
+    // new CopyPlugin({
+    //   patterns: [
+    //     { from: "public/favicon.png", to: "favicon.png" },
+    //     { from: "public/favicon.ico", to: "favicon.ico" },
+    //     { from: "public/style.css", to: "style.css" },
+    //   ],
+    // }),
   ],
 };
