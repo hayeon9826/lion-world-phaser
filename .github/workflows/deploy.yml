@@ -1,4 +1,4 @@
-name: Deploy Phaser Application
+name: Deploy Phaser Application (Lion World)
 
 on:
   workflow_dispatch:
