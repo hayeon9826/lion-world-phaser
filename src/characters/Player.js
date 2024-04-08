@@ -1,6 +1,7 @@
 import { Physics } from "phaser";
 import Config from "../Config";
 import HpBar from "../ui/HpBar";
+import { loseGame, ç } from "../utils/sceneManager";
 
 export default class Player extends Physics.Arcade.Sprite {
   constructor(scene) {
@@ -57,6 +58,7 @@ export default class Player extends Physics.Arcade.Sprite {
     // HP가 0이 되면 게임오버!
     if (this.m_hpBar.m_currentHp <= 0) {
       console.log("GAME OVER");
+      loseGame(this.scene);
     }
   }
 

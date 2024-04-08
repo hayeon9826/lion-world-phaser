@@ -1,8 +1,7 @@
 import { PlayingScene } from "./scenes/PlayingScene";
 import { LoadingScene } from "./scenes/LoadingScene";
+import GameOverScene from "./scenes/GameOverScene";
 
-//  Find out more information about the Game Config at:
-//  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
 const Config = {
   type: Phaser.AUTO,
   width: window.innerWidth,
@@ -20,7 +19,7 @@ const Config = {
       debug: process.env.DEBUG === "true",
     },
   },
-  scene: [LoadingScene, PlayingScene],
+  scene: [LoadingScene, PlayingScene, GameOverScene],
 };
 
 export default Config;
