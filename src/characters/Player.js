@@ -1,7 +1,7 @@
 import { Physics } from "phaser";
 import Config from "../Config";
 import HpBar from "../ui/HpBar";
-import { loseGame, ç } from "../utils/sceneManager";
+import { loseGame } from "../utils/sceneManager";
 
 export default class Player extends Physics.Arcade.Sprite {
   constructor(scene) {

@@ -2,6 +2,8 @@
 // GameOverScene으로 전환시키는 함수입니다.
 
 export function loseGame(playingScene) {
+  // playingScene.sound.stopAll();
+  // playingScene.sound.removeAll();
   playingScene.m_gameOverSound.play();
   playingScene.scene.start("gameOverScene");
 }
