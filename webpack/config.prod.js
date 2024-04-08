@@ -10,7 +10,7 @@ module.exports = {
   entry: "./src/main.js",
   output: {
     path: path.resolve(process.cwd(), "dist"),
-    filename: "./bundle.min.js",
+    filename: "bundle.min.js",
   },
   devtool: false,
   performance: {
@@ -67,9 +67,9 @@ module.exports = {
     }),
     new CopyPlugin({
       patterns: [
-        { from: "public/favicon.png", to: "favicon.png" },
-        { from: "public/favicon.ico", to: "favicon.ico" },
-        { from: "public/style.css", to: "style.css" },
+        { from: "./public/favicon.png", to: "favicon.png" },
+        { from: "./public/favicon.ico", to: "favicon.ico" },
+        { from: "./public/style.css", to: "style.css" },
       ],
     }),
   ],
