@@ -22,3 +22,15 @@ export function getRandomPosition(x, y) {
 
   return [_x, _y];
 }
+
+/***
+ * @param {Number} value
+ * @param {Number} lo
+ * @param {Number} hi
+ * @returns {number} value가 lo 이상 hi 이하라면 value 그대로, lo 미만이면 lo, hi 초과면 hi를 리턴한다.
+ * @type Number
+ * clamp는 HP가 100이 넘거나 0보다 작아져도 오류가 나지 않도록 0보다 작은 수는 0, 100보다 큰 수는 100으로 변환해주는 함수
+ */
+export function clamp(value, lo, hi) {
+  return Math.min(Math.max(value, lo), hi);
+}
