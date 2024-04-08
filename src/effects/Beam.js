@@ -9,10 +9,9 @@ export default class Beam extends Physics.Arcade.Sprite {
     // beam의 속도, 지속시간을 적당히 설정해줍니다.
     this.SPEED = 100;
     this.DURATION = 1500;
-
-    scale.add.existing(this);
+    scene.add.existing(this);
     // 충돌이나 업데이트를 관리할 수 있게 합니다.
-    scene.physics.world.enableBody();
+    scene.physics.world.enableBody(this);
     // 동적 공격 그룹에 beam을 추가합니다.
     scene.m_weaponDynamic.add(this);
     // beam을 쏘는 소리를 재생합니다.
