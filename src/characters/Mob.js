@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import Explosion from "../effects/Explosion";
+import ExpUp from "../items/ExpUp";
 
 export default class Mob extends Phaser.Physics.Arcade.Sprite {
   /**
@@ -146,6 +147,12 @@ export default class Mob extends Phaser.Physics.Arcade.Sprite {
     // 폭발 효과를 발생시킵니다. (이미지, 소리)
     new Explosion(this.scene, this.x, this.y);
     this.scene.m_explosionSound.play();
+
+    // dropRate의 확률로 item을 떨어뜨린다.
+    if (Math.random() < this.m_dropRate) {
+      const expUp = new ExpUp(this.scene, this);
+      this.scene.m_expUps.add(expUp);
+    }
 
     // player 쪽으로 움직이게 만들었던 event를 제거합니다.
     this.scene.time.removeEvent(this.m_events);
