@@ -5,6 +5,8 @@ import { setBackground } from "../utils/backgroundManager";
 import Mob from "../characters/Mob";
 import { addMobEvent } from "../utils/mobManager";
 import { addAttackEvent } from "../utils/attackManager";
+import TopBar from "../ui/TopBar";
+import ExpBar from "../ui/ExpBar";
 
 export class PlayingScene extends Scene {
   constructor() {
@@ -123,6 +125,11 @@ export class PlayingScene extends Scene {
       null,
       this
     );
+
+    // topBar, expBar를 PlayingScene에 추가해줍니다.
+    // 맨 처음 maxExp는 50으로 설정해줍니다.
+    this.m_topBar = new TopBar(this);
+    this.m_expBar = new ExpBar(this, 50);
   }
 
   update() {
