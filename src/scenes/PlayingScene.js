@@ -202,5 +202,13 @@ export class PlayingScene extends Scene {
     this.m_expUpSound.play();
     // 일단 콘솔로 상승한 경험치를 출력합니다.
     console.log(`경험치 ${expUp.m_exp} 상승!`);
+
+    // expUp item을 먹으면 expBar의 경험치를 아이템의 m_exp 값만큼 증가시켜줍니다.
+    this.m_expBar.increase(expUp.m_exp);
+
+    // 만약 현재 경험치가 maxExp 이상이면 레벨을 증가시켜줍니다.
+    if (this.m_expBar.m_currentExp >= this.m_expBar.m_maxExp) {
+      this.m_topBar.gainLevel();
+    }
   }
 }

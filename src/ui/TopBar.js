@@ -18,7 +18,7 @@ export default class TopBar extends Phaser.GameObjects.Graphics {
     // 잡은 몹의 수를 MOBS KILLED라는 문구 옆에 적습니다.
     this.m_mobsKilledLabel = scene.add
       .bitmapText(
-        5,
+        20,
         1,
         "pixelFont",
         `MOBS KILLED ${this.m_mobsKilled.toString().padStart(6, "0")}`,
@@ -32,7 +32,7 @@ export default class TopBar extends Phaser.GameObjects.Graphics {
     // 레벨을 LEVEL이라는 문구 옆에 적습니다.
     this.m_levelLabel = scene.add
       .bitmapText(
-        650,
+        Config.width - 150,
         1,
         "pixelFont",
         `LEVEL ${this.m_level.toString().padStart(3, "0")}`,
@@ -58,6 +58,7 @@ export default class TopBar extends Phaser.GameObjects.Graphics {
   // 이 함수는 경험치가 다 찰 때마다 실행됩니다. (ExpBar.js 참고)
   gainLevel() {
     this.m_level += 1;
+    console.log(this.m_level, "@@@@@m_level");
     this.m_levelLabel.text = `LEVEL ${this.m_level
       .toString()
       .padStart(3, "0")}`;
