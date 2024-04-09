@@ -7,6 +7,7 @@ import { addMobEvent } from "../utils/mobManager";
 import { addAttackEvent } from "../utils/attackManager";
 import TopBar from "../ui/TopBar";
 import ExpBar from "../ui/ExpBar";
+import { pause } from "../utils/pauseManager";
 
 export class PlayingScene extends Scene {
   constructor() {
@@ -130,6 +131,16 @@ export class PlayingScene extends Scene {
     // 맨 처음 maxExp는 50으로 설정해줍니다.
     this.m_topBar = new TopBar(this);
     this.m_expBar = new ExpBar(this, 50);
+
+    // event handler
+    // ESC 키를 누르면 "pause" 유형으로 일시정지 시킵니다.
+    this.input.keyboard.on(
+      "keydown-ESC",
+      () => {
+        pause(this, "pause");
+      },
+      this
+    );
   }
 
   update() {
@@ -208,7 +219,16 @@ export class PlayingScene extends Scene {
 
     // 만약 현재 경험치가 maxExp 이상이면 레벨을 증가시켜줍니다.
     if (this.m_expBar.m_currentExp >= this.m_expBar.m_maxExp) {
-      this.m_topBar.gainLevel();
+      // this.m_topBar.gainLevel();
+      // maxExp를 초과하면 레벨업을 해주던 기존의 코드를 지우고
+      // afterLevelUp 메소드를 만들어 거기에 옮겨줍니다.
+      // 추후 레벨에 따른 몹, 무기 추가를 afterLevelUp에서 실행해 줄 것입니다.
+      pause(this, "levelup");
     }
+  }
+
+  // levelup 후 로직 추가
+  afterLevelUp() {
+    this.m_topBar.gainLevel();
   }
 }
