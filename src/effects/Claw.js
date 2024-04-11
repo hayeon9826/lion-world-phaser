@@ -3,6 +3,7 @@ import Player from "../characters/Player";
 
 export default class Claw extends Phaser.Physics.Arcade.Sprite {
   // scene의 startingPosition 위치에 데미지 damage와 크기 scale의 claw를 생성합니다.
+  // isHeadingRight - 왼쪽을 보고있는지, 오른쪽을 보고있는지 확인해서 이미지 반전
   constructor(scene, startingPosition, isHeadingRight, damage, scale) {
     super(scene, startingPosition[0], startingPosition[1], "claw_white");
 
