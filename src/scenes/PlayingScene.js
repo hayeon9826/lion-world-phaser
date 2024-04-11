@@ -200,6 +200,11 @@ export class PlayingScene extends Scene {
 
     // vector를 player 클래스의 메소드의 파라미터로 넘겨줍니다.
     this.m_player.move(vector);
+
+    // static 공격들은 player가 이동하면 그대로 따라오도록 해줍니다.
+    this.m_weaponStatic.children.each((weapon) => {
+      weapon.move(vector);
+    }, this);
   }
 
   // player와 expUp이 접촉했을 때 실행되는 메소드입니다.
