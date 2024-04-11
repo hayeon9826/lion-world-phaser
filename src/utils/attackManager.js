@@ -51,6 +51,7 @@ export function addAttackEvent(
         damage,
         scale
       );
+      // scene.m_attackEvents[attackType] = catnip;
       scene.m_attackEvents[attackType] = { object: catnip, damage: damage };
       break;
   }
@@ -73,10 +74,10 @@ function doAttackOneSet(scene, attackType, damage, scale) {
     case "claw":
       // claw는 플레이어의 앞쪽 공격 1번, 뒤쪽 공격 1번이 한 세트입니다.
       // isHeadingRight은 플레이어가 바라보는 방향에 따라 claw 이미지를 적절히 나타내기 위한 변수입니다.
-      const isHeadingRight = scale.m_player.flipX;
+      const isHeadingRight = scene.m_player.flipX;
       new Claw(
-        scale,
-        [scale.m_player.x - 60 + 120 * isHeadingRight, scene.m_player.y - 40],
+        scene,
+        [scene.m_player.x - 60 + 120 * isHeadingRight, scene.m_player.y - 40],
         isHeadingRight,
         damage,
         scale
@@ -99,6 +100,8 @@ function doAttackOneSet(scene, attackType, damage, scale) {
         },
         loop: false,
       });
+      break;
+    default:
       break;
   }
 }
@@ -126,7 +129,7 @@ export function setAttackDamage(scene, attackType, newDamage) {
 // scene에 있는 attackType 공격의 scale을 재설정해주는 함수입니다.
 export function setAttackScale(scene, attackType, newScale) {
   const damage = scene.m_attackEvents[attackType].damage;
-  const repeatGap = scene.m_attackEvents[attackType].delay;
+  const repeatGap = scene.m_attackEvents[attackType].repeatGap;
   removeAttack(scene, attackType);
   addAttackEvent(scene, attackType, damage, newScale, repeatGap);
 }

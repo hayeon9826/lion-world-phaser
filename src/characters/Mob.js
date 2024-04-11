@@ -78,7 +78,6 @@ export default class Mob extends Phaser.Physics.Arcade.Sprite {
     else this.flipX = false;
 
     // HP가 0 이하가 되면 죽습니다.
-
     if (this.m_hp <= 0) {
       this.die();
     }

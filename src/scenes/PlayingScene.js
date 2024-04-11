@@ -4,10 +4,16 @@ import Player from "../characters/Player";
 import { setBackground } from "../utils/backgroundManager";
 import Mob from "../characters/Mob";
 import { addMobEvent, removeOldestMobEvent } from "../utils/mobManager";
-import { addAttackEvent } from "../utils/attackManager";
+import {
+  addAttackEvent,
+  removeAttack,
+  setAttackDamage,
+  setAttackScale,
+} from "../utils/attackManager";
 import TopBar from "../ui/TopBar";
 import ExpBar from "../ui/ExpBar";
 import { pause } from "../utils/pauseManager";
+import { createTime } from "../utils/time";
 
 export class PlayingScene extends Scene {
   constructor() {
@@ -67,9 +73,12 @@ export class PlayingScene extends Scene {
     this.m_weaponDynamic = this.add.group();
     this.m_weaponStatic = this.add.group();
     this.m_attackEvents = {};
+
     // PlayingScene이 실행되면 바로 beam attack event를 추가해줍니다.
+    // 맨 처음 추가될 공격은 create 메소드 내에서 추가해줍니다.
     // scene, attackType, attackDamage, attackScale, repeatGap
-    addAttackEvent(this, "beam", 10, 1, 1000);
+    addAttackEvent(this, "claw", 10, 2.5, 1500);
+    // addAttackEvent(this, "beam", 10, 1, 1000);
 
     /**
      * 어떤 오브젝트들이 충돌했을 때 동작을 발생시키려면 physics.add.overlap 함수를 사용합니다.
@@ -109,7 +118,7 @@ export class PlayingScene extends Scene {
       this.m_weaponStatic,
       this.m_mobs,
       (weapon, mob) => {
-        mob.hitByStatic(weapon, weapon.m_damage);
+        mob.hitByStatic(weapon.m_damage);
       },
       null,
       this
@@ -141,6 +150,9 @@ export class PlayingScene extends Scene {
       },
       this
     );
+
+    // 플레이 시간을 생성해줍니다.
+    createTime(this);
   }
 
   update() {
@@ -245,15 +257,30 @@ export class PlayingScene extends Scene {
       case 2:
         removeOldestMobEvent(this);
         addMobEvent(this, 1000, "mob2", "mob2_anim", 20, 0.8);
+        // claw 공격 크기 확대
+        setAttackScale(this, "claw", 4);
         break;
       case 3:
         removeOldestMobEvent(this);
         addMobEvent(this, 1000, "mob3", "mob3_anim", 30, 0.7);
+        // catnip 공격 추가
+        addAttackEvent(this, "catnip", 10, 2);
         break;
       case 4:
         removeOldestMobEvent(this);
         addMobEvent(this, 1000, "mob4", "mob4_anim", 40, 0.7);
+        // catnip 공격 크기 확대
+        setAttackScale(this, "catnip", 3);
         break;
+      case 5:
+        // claw 공격 삭제
+        removeAttack(this, "claw");
+        // beam 공격 추가
+        addAttackEvent(this, "beam", 10, 1, 1000);
+      case 6:
+        // beam 공격 크기 및 데미지 확대
+        setAttackScale(this, "beam", 2);
+        setAttackDamage(this, "beam", 40);
     }
   }
 }
