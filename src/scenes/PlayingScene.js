@@ -81,7 +81,7 @@ export class PlayingScene extends Scene {
     // addAttackEvent(this, "beam", 10, 1, 1000);
 
     // 보스몹이 잘 추가되는지 확인하기 위해 create 메서드 내에서 addMob을 실행시켜봅니다.
-    addMob(this, "lion", "lion_anim", 100, 0);
+    // addMob(this, "lion", "lion_anim", 100, 0);
 
     /**
      * 어떤 오브젝트들이 충돌했을 때 동작을 발생시키려면 physics.add.overlap 함수를 사용합니다.
@@ -271,7 +271,7 @@ export class PlayingScene extends Scene {
         break;
       case 4:
         removeOldestMobEvent(this);
-        addMobEvent(this, 1000, "mob4", "mob4_anim", 40, 0.7);
+        addMobEvent(this, 1000, "mob4", "mob4_anim", 30, 0.7);
         // catnip 공격 크기 확대
         setAttackScale(this, "catnip", 3);
         break;
@@ -280,10 +280,16 @@ export class PlayingScene extends Scene {
         removeAttack(this, "claw");
         // beam 공격 추가
         addAttackEvent(this, "beam", 10, 1, 1000);
+        break;
       case 6:
         // beam 공격 크기 및 데미지 확대
         setAttackScale(this, "beam", 2);
-        setAttackDamage(this, "beam", 40);
+        setAttackDamage(this, "beam", 20);
+        break;
+      case 7:
+        // 보스몹은 레벨 7에 등장시킵니다.
+        addMob(this, "lion", "lion_anim", 200, 0);
+        break;
     }
   }
 }

@@ -143,7 +143,7 @@ export default class Mob extends Phaser.Physics.Arcade.Sprite {
     this.m_canBeAttacked = false;
 
     this.scene.time.addEvent({
-      delay: 1000,
+      delay: 800,
       callback: () => {
         this.m_canBeAttacked = true;
       },
