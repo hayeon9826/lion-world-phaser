@@ -43,8 +43,8 @@ export default class GameOverScene extends Phaser.Scene {
       .bitmapText(
         Config.width / 2,
         Config.height / 2 - 30,
-        "pixedFont",
-        `You survived for ${getTimeString(this.m_mobsKilled)} !`,
+        "pixelFont",
+        `You survived for ${getTimeString(this.m_secondElapsed)} !`,
         40
       )
       .setOrigin(0.5);
@@ -54,7 +54,7 @@ export default class GameOverScene extends Phaser.Scene {
       .bitmapText(
         Config.width / 2,
         Config.height / 2 + 30,
-        "pixedFont",
+        "pixelFont",
         `Mobs Killed : ${this.m_mobsKilled}, Level : ${this.m_level}`,
         40
       )
