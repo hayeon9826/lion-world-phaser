@@ -1,6 +1,7 @@
 import { PlayingScene } from "./scenes/PlayingScene";
 import { LoadingScene } from "./scenes/LoadingScene";
 import GameOverScene from "./scenes/GameOverScene";
+import MainScene from "./scenes/MainScene";
 
 const Config = {
   type: Phaser.AUTO,
@@ -19,7 +20,7 @@ const Config = {
       debug: process.env.DEBUG === "true",
     },
   },
-  scene: [LoadingScene, PlayingScene, GameOverScene],
+  scene: [LoadingScene, PlayingScene, GameOverScene, MainScene],
 };
 
 export default Config;
