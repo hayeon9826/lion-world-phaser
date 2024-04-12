@@ -1,6 +1,8 @@
 import Phaser from "phaser";
 import Explosion from "../effects/Explosion";
 import ExpUp from "../items/ExpUp";
+import { removeAttack } from "../utils/attackManager";
+import { winGame } from "../utils/sceneManager";
 
 export default class Mob extends Phaser.Physics.Arcade.Sprite {
   /**
@@ -25,6 +27,10 @@ export default class Mob extends Phaser.Physics.Arcade.Sprite {
     // speed, hp, dropRate 멤버 변수를 추가해줍니다.
     // speed를 몹마다 다르게 조절할 수도 있습니다.
     this.m_speed = 50;
+    // 보스몹의 이동 속도를 다른 몹보다 조금 빠르게 설정해줍니다.
+    if (texture === "lion") {
+      this.m_speed = 60;
+    }
     this.m_hp = initHp;
     this.m_dropRate = dropRate;
 
@@ -67,6 +73,8 @@ export default class Mob extends Phaser.Physics.Arcade.Sprite {
     // 공격 받을 수 있는지 여부를 뜻하는 멤버 변수입니다.
     // static 공격의 경우 처음 접촉했을 때 쿨타임을 주지 않으면 매 프레임당 계속해서 공격한 것으로 처리되므로 해당 변수로 쿨타임을 만들게 되었습니다.
     this.m_canBeAttacked = true;
+    // 보스몹의 죽음 여부를 판단하기 위한 멤버 변수입니다.
+    this.m_isDead = false;
   }
 
   update() {
@@ -78,7 +86,7 @@ export default class Mob extends Phaser.Physics.Arcade.Sprite {
     else this.flipX = false;
 
     // HP가 0 이하가 되면 죽습니다.
-    if (this.m_hp <= 0) {
+    if (this.m_hp <= 0 && !this.m_isDead) {
       this.die();
     }
   }
@@ -114,6 +122,8 @@ export default class Mob extends Phaser.Physics.Arcade.Sprite {
 
   // 공격받은 mob을 투명도를 1초간 조절함으로써 공격받은 것을 표시합니다.
   displayHit() {
+    // 보스몹이면 투명도를 조절하지 않습니다.
+    if (this.texture.key === "lion") return;
     // 몹의 투명도를 0.5로 변경하고,
     // 1초 후 1로 변경합니다.
     this.alpha = 0.5;
@@ -143,6 +153,8 @@ export default class Mob extends Phaser.Physics.Arcade.Sprite {
 
   // mob의 폭발과 함께 죽음을 나타내는 함수
   die() {
+    // 한번이라도 죽으면 die 메서드에 다시 들어오지 못하도록 m_isDead를 true로 바꿔줍니다.
+    this.m_isDead = true;
     // 폭발 효과를 발생시킵니다. (이미지, 소리)
     new Explosion(this.scene, this.x, this.y);
     this.scene.m_explosionSound.play();
@@ -159,7 +171,41 @@ export default class Mob extends Phaser.Physics.Arcade.Sprite {
     // player 쪽으로 움직이게 만들었던 event를 제거합니다.
     this.scene.time.removeEvent(this.m_events);
 
-    // mob 객체를 제거합니다.
-    this.destroy();
+    // 보스몹이 죽었을 때
+    if (this.texture.key === "lion") {
+      // 공격을 제거합니다. (attackManager.js 참고)
+      removeAttack(this.scene, "catnip");
+      removeAttack(this.scene, "beam");
+      removeAttack(this.scene, "claw");
+      // 플레이어가 보스몹과 접촉해도 HP가 깎이지 않도록 만듭니다.
+      this.disableBody(true, false);
+      // 보스몹이 움직이던 애니메이션을 멉춥니다.
+      this.play("lion_idle");
+      // 모든 몹의 움직임을 멈춥니다.
+      this.scene.m_mobs.children.each((mob) => {
+        mob.m_speed = 0;
+      });
+
+      // 보스몹이 서서히 투멍해지도록 합니다.
+      this.scene.time.addEvent({
+        delay: 30,
+        callback: () => {
+          this.alpha -= 0.01;
+        },
+        repeat: 100,
+      });
+      // 보스몹이 투명해진 후, GameClearScene으로 화면을 전환합니다.
+      this.scene.time.addEvent({
+        delay: 4000,
+        callback: () => {
+          winGame(this.scene);
+        },
+        loop: false,
+      });
+    } else {
+      // 보스몹이 아닌 몹이 죽었을 때
+      // mob 객체를 제거합니다.
+      this.destroy();
+    }
   }
 }

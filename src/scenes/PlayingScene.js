@@ -3,7 +3,7 @@ import Config from "../Config";
 import Player from "../characters/Player";
 import { setBackground } from "../utils/backgroundManager";
 import Mob from "../characters/Mob";
-import { addMobEvent, removeOldestMobEvent } from "../utils/mobManager";
+import { addMob, addMobEvent, removeOldestMobEvent } from "../utils/mobManager";
 import {
   addAttackEvent,
   removeAttack,
@@ -79,6 +79,9 @@ export class PlayingScene extends Scene {
     // scene, attackType, attackDamage, attackScale, repeatGap
     addAttackEvent(this, "claw", 10, 2.5, 1500);
     // addAttackEvent(this, "beam", 10, 1, 1000);
+
+    // 보스몹이 잘 추가되는지 확인하기 위해 create 메서드 내에서 addMob을 실행시켜봅니다.
+    addMob(this, "lion", "lion_anim", 100, 0);
 
     /**
      * 어떤 오브젝트들이 충돌했을 때 동작을 발생시키려면 physics.add.overlap 함수를 사용합니다.
