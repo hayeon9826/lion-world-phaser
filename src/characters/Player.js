@@ -3,6 +3,8 @@ import Config from "../Config";
 import HpBar from "../ui/HpBar";
 import { loseGame } from "../utils/sceneManager";
 
+export const PLAYER_SPEED = 4;
+
 export default class Player extends Physics.Arcade.Sprite {
   constructor(scene) {
     // 화면의 가운데에 player를 추가해줍니다.
@@ -34,8 +36,6 @@ export default class Player extends Physics.Arcade.Sprite {
   }
 
   move(vector) {
-    let PLAYER_SPEED = 4;
-
     this.x += vector[0] * PLAYER_SPEED;
     this.y += vector[1] * PLAYER_SPEED;
 
